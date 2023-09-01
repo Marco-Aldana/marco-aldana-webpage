@@ -4,7 +4,7 @@ import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 
 type Props = {
-	project: {
+	post: {
 		url?: string;
 		title: string;
 		description: string;
@@ -12,21 +12,21 @@ type Props = {
 	};
 
 };
-export const Header: React.FC<Props> = ({ project }) => {
+export const HeaderPost: React.FC<Props> = ({ post }) => {
 	const ref = useRef<HTMLElement>(null);
 	const [isIntersecting, setIntersecting] = useState(true);
 
 	const links: { label: string; href: string }[] = [];
-	if (project.repository) {
+	if (post.repository) {
 		links.push({
 			label: "GitHub",
-			href: `https://github.com/${project.repository}`,
+			href: `https://github.com/${post.repository}`,
 		});
 	}
-	if (project.url) {
+	if (post.url) {
 		links.push({
 			label: "Website",
-			href: project.url,
+			href: post.url,
 		});
 	}
 	useEffect(() => {
@@ -98,10 +98,10 @@ export const Header: React.FC<Props> = ({ project }) => {
 				<div className="mx-auto max-w-7xl px-6 lg:px-8 text-center flex flex-col items-center">
 					<div className="mx-auto max-w-2xl lg:mx-0">
 						<h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl font-display">
-							{project.title}
+							{post.title}
 						</h1>
 						<p className="mt-6 text-lg leading-8 text-zinc-300">
-							{project.description}
+							{post.description}
 						</p>
 					</div>
 
