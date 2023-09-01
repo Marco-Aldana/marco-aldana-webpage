@@ -17,15 +17,10 @@ export const HeaderPost: React.FC<Props> = ({ post }) => {
 	const [isIntersecting, setIntersecting] = useState(true);
 
 	const links: { label: string; href: string }[] = [];
-	if (post.repository) {
-		links.push({
-			label: "GitHub",
-			href: `https://github.com/${post.repository}`,
-		});
-	}
+
 	if (post.url) {
 		links.push({
-			label: "Website",
+			label: "Learn More",
 			href: post.url,
 		});
 	}

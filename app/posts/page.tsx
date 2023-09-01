@@ -9,7 +9,7 @@ import { Article } from "./article";
 
 export const revalidate = 60;
 export default async function PostsPage() {
-	const featured = allPosts.find((post) => post.slug === "unkey")!;
+	const featured = allPosts.find((post) => post.slug === "SQLite-Understanding")!;
 	const top2 = allPosts.find((post) => post.slug === "planetfall")!;
 	const top3 = allPosts.find((post) => post.slug === "highstorm")!;
 	const sorted = allPosts

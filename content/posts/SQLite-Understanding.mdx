@@ -1,0 +1,134 @@
+---
+title: Understanding SQLite
+description: Key Concepts, Data Types, and Basic Operations.
+date: "2023-08-31T00:00:00"
+url: https://www.sqlite.org/docs.html
+published: true
+---
+
+
+[![](https://academiaandroid.com/wp-content/uploads/2014/06/SQLite_logo.png)](https://www.sqlite.org/docs.html)
+
+# Understanding SQLite3: Key Concepts, Data Types, and Basic Operations
+
+SQLite3, a powerful variant of the SQLite database, is a self-contained, serverless SQL database engine that is both easy to set up and incredibly powerful. It has carved out its space in everything from embedded systems and mobile apps to desktop software and large-scale web applications. This post aims to introduce you to the most important aspects of SQLite3, such as its key features, data types, and basic operations.
+
+## Key Features of SQLite3
+
+### Self-contained
+SQLite3 is a self-contained system, which means it requires minimal setup and configuration. This makes it an excellent choice for developers looking for a straightforward and uncomplicated database solution.
+
+### Serverless Architecture
+Unlike traditional databases that operate on client-server architecture, SQLite3 is serverless. This means you don't need a separate server to operate your database; it resides locally on the client machine.
+
+### ACID Compliant
+SQLite3 supports ACID (Atomicity, Consistency, Isolation, Durability) properties, ensuring reliable and secure database transactions.
+
+### Open Source
+Being open source gives SQLite3 the advantage of a large community of developers that continually contribute to its improvement.
+
+### Cross-Platform
+SQLite3 supports various platforms including Windows, macOS, and Linux, making it extremely flexible.
+
+## Data Types in SQLite3
+
+SQLite3 has a small set of data types which are mapped to a broader set of data types in other database management systems:
+
+- **NULL**: Represents a missing value or an undefined one.
+- **INTEGER**: A signed integer.
+- **REAL**: A floating-point value.
+- **TEXT**: A text string.
+- **BLOB**: Binary Large Object; could be images, audio, or any other kind of binary data.
+
+## Basic Operations
+
+### Creating a Database
+
+Creating a new database is as simple as connecting to it. You can use various programming languages like Python, C, or you can use the SQLite3 shell. Here is how you'd create a new database in **terminal** on mac:
+```zsh
+sqlite3 database_Name.db
+```
+If you already have a database, you can acces with the same command on terminal:
+```zsh
+sqlite3 database_Name.db
+```
+to exit from sqlite mode you can type `.exit` in terminal and press enter.
+```zsh
+.exit
+```
+### Tables Management
+
+Once connected to a database, you can create tables using the `CREATE TABLE` SQL statement. Here’s how you'd create a table to store information about students:
+
+```sql
+CREATE TABLE students (
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    age INTEGER,
+    grade REAL
+);
+```
+You may also make other operations like `ALTER`:
+  ```sql
+  ALTER TABLE students ADD COLUMN gender TEXT;
+  ```
+or `DELETE`:
+  ```sql
+  DROP TABLE students;
+  ```
+*is important to mention that delete tables is not a good pratice, since it represents a important data loss, a good alternative for that is make a backup on another database or export as .csv, so you can consult this data later or restore in the database if needed.*
+
+### Inserting Data
+
+To insert new records into your table, you use the `INSERT INTO` statement.
+
+```sql
+INSERT INTO students (id, name, age, grade)
+VALUES (1, 'John', 20, 8.5);
+```
+
+### Querying Data
+
+Querying data from your SQLite3 database involves using the `SELECT` SQL statement.
+
+```sql
+SELECT * FROM students;
+```
+
+This query will return all records from the `students` table.
+
+### Updating Data
+
+Updating existing records is done with the `UPDATE` SQL statement.
+
+```sql
+UPDATE students
+SET grade = 9.0
+WHERE id = 1;
+```
+
+### Deleting Data
+
+To remove records, you use the `DELETE FROM` statement.
+
+```sql
+DELETE FROM students
+WHERE id = 1;
+```
+
+## Download Options 
+Finally, if you want to use SQLite you must already have installed on your computer, you can check if you have it and the version by opening your terminal and typing:
+```szh
+sqlite3 --version
+```
+If you don't have it installed yet, you can download the installer [here](https://www.sqlite.org/download.html).
+
+Sometimes you might prefer to manage the databases from a graphical interface, here are some options, although you can look for others if you prefer.
+
+-[Table Plus](https://tableplus.com)
+
+-[SQLite Studio](https://sqlitestudio.pl)
+
+## Conclusion
+
+SQLite3 is an extremely powerful, yet lightweight, SQL database engine. Its serverless architecture and minimal setup make it a fantastic choice for a broad range of applications. While it supports a limited set of data types, they are more than adequate for most use-cases. With support for basic operations like creating tables, inserting data, querying data, updating, and deleting records, it's a robust solution for anyone looking to manage data effectively.
