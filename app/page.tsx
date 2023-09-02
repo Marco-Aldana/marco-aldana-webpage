@@ -39,15 +39,23 @@ export default function Home() {
 			<div className="my-16 text-center animate-fade-in">
 				<h2 className="text-sm text-zinc-500 ">
 									<div className="flex items-center justify-center xl:gap-14 sm:gap-6 gap-4">
+										<div className="carrousel">
 												<Image src="/images/logos-svg/javascript.svg" width={50} height={50} alt="Javascript"></Image>
 												<Image src="/images/logos-svg/docker.svg" width={50} height={50} alt="Docker"></Image>
 												<Image src="/images/logos-svg/dotnet.svg" width={50} height={50} alt="DotNet"></Image>
 												<Image src="/images/logos-svg/azure.svg" width={50} height={50} alt="Azure"></Image>
+												<Image src="/images/logos-svg/python.svg" width={50} height={50} alt="Python"></Image>
+												<Image src="/images/logos-svg/react.svg" width={50} height={50} alt="React"></Image>
+												<Image src="/images/logos-svg/next-js.svg" width={50} height={50} alt="Next-js"></Image>
+												<Image src="/images/logos-svg/typescript.svg" width={50} height={50} alt="Typescript"></Image>
+												<Image src="/images/logos-svg/cSharp.svg" width={50} height={50} alt="C#"></Image>
 												<Image src="/images/logos-svg/sql.svg" width={50} height={50} alt="SQL"></Image>
+												</div>
 									</div>
 									<br></br>
 					Hi, my name is Marco, 
-					<br/>I'm a full-stack software developer, focused on <b>.Net Core</b> and <b>JavaScript</b> technologies.
+					<br/>I'm a full-stack software developer, 
+					<br/>focused on <b>.Net Core</b> and <b>JavaScript</b> technologies.
 				</h2>
 			</div>
 		</div>

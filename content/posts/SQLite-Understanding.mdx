@@ -116,6 +116,523 @@ DELETE FROM students
 WHERE id = 1;
 ```
 
+# Understanding SQLite Operators: A Comprehensive Guide
+
+SQLite is a C library that facilitates lightweight, disk-based database management that can be easily integrated with various programming languages like Python, C, C++, and Java, among others. At its core, SQLite operates using SQL (Structured Query Language), which is used to communicate with a relational database. 
+
+One of the most fundamental aspects of SQL in SQLite involves the use of operators—these are symbols or keywords that perform operations on operands. Operators are critical for data manipulation, retrieval, and updating. This blog post aims to dissect the types of operators in SQLite and provide examples for each.
+
+## Arithmetic Operators
+
+These operators perform basic arithmetic operations.
+
+- `+` : Addition
+- `-` : Subtraction
+- `*` : Multiplication
+- `/` : Division
+- `%` : Modulus
+
+### Example
+
+```sql
+SELECT salary, (salary * 0.10) AS 'Salary Increment'
+FROM employees;
+```
+
+## Comparison Operators
+
+These operators compare one operand with another and return a boolean result.
+
+- `=` `==` : Equal to
+- `>` : Greater than
+- `<` : Less than
+- `>=` : Greater than or equal to
+- `<=` : Less than or equal to
+- `<>` or `!=` : Not equal to
+
+### Example
+
+```sql
+SELECT * FROM employees
+WHERE age >= 25;
+```
+
+## Logical Operators
+
+Logical operators are used to combine two or more conditions.
+
+- `AND`: True if all conditions are true
+- `OR`: True if at least one condition is true
+- `NOT`: True if the condition is false
+
+### Example
+
+```sql
+SELECT * FROM employees
+WHERE age >= 25 AND department = 'HR';
+```
+
+## Bitwise Operators
+
+These are specialized operators used for manipulation at the bit-level.
+
+- `&`: Bitwise AND
+- `|`: Bitwise OR
+- `~`: Bitwise NOT
+- `<<`: Shift left
+- `>>`: Shift right
+
+### Example
+
+```sql
+SELECT (4 | 1);  -- Outputs 5
+```
+
+## String Operators
+
+SQLite has some implicit string operators.
+
+- `||`: String Concatenation
+- `LIKE`: String matching with wildcard support
+- `GLOB`: String matching with Unix glob patterns
+
+### Example
+
+```sql
+SELECT firstName || ' ' || lastName AS 'Full Name'
+FROM employees;
+```
+
+## Compound Operators
+
+SQLite supports the following compound operators as shorthand for operations that update data.
+
+- `+=`: Increment and assign
+- `-=`: Decrement and assign
+- `*=`: Multiply and assign
+- `/=`: Divide and assign
+- `%=`: Modulus and assign
+
+### Example
+
+Unfortunately, SQLite doesn't natively support these compound operators, but you can simulate the functionality.
+
+```sql
+-- Simulating +=
+UPDATE table_name
+SET column1 = column1 + 1;
+```
+
+## NULL Handling Operators
+
+SQLite provides two main NULL handling mechanisms.
+
+- `IS NULL`: True if the operand is NULL
+- `IS NOT NULL`: True if the operand is not NULL
+- `IFNULL()`: Replace NULL with a specified value
+- `COALESCE()`: Return the first non-NULL value in a list
+
+### Example
+
+```sql
+SELECT * FROM employees
+WHERE department IS NOT NULL;
+```
+
+## Conclusion
+
+Understanding the wide array of operators available in SQLite is crucial for efficient database operations. Whether you're filtering data, performing calculations, or manipulating data at the bit level, operators make these tasks both possible and efficient. The next step is to combine these operators in meaningful ways to solve complex queries and data manipulation tasks.
+
+In SQLite, there are several advanced comparison operators that go beyond basic equality or inequality checks. Here's an overview:
+
+### LIKE
+
+The `LIKE` operator is used for string pattern matching. It supports wildcard characters: `%` to represent zero or more characters and `_` to represent exactly one character.
+
+```sql
+SELECT * FROM employees WHERE name LIKE 'Jo%';
+```
+
+### GLOB
+
+Similar to `LIKE`, but `GLOB` performs case-sensitive pattern matching and supports UNIX-style wildcards: `*`, `?`, and `[]`.
+
+```sql
+SELECT * FROM employees WHERE name GLOB 'Jo*';
+```
+
+### IN
+
+The `IN` operator is used to filter records against a set of values.
+
+```sql
+SELECT * FROM employees WHERE department IN ('HR', 'Engineering');
+```
+
+### BETWEEN ... AND ...
+
+The `BETWEEN ... AND ...` operator filters records based on a range.
+
+```sql
+SELECT * FROM employees WHERE age BETWEEN 25 AND 35;
+```
+
+### IS NULL and IS NOT NULL
+
+These operators are used to check for NULL values.
+
+```sql
+SELECT * FROM employees WHERE department IS NULL;
+```
+
+### EXISTS
+
+The `EXISTS` operator is used to check for the existence of rows that satisfy a given condition within a subquery.
+
+```sql
+SELECT * FROM departments WHERE EXISTS (SELECT * FROM employees WHERE departments.department_id = employees.department_id);
+```
+
+### CASE
+
+The `CASE` expression is more of a conditional expression than an operator per se, but it's often lumped in with advanced comparison operations. It's used to implement if-else logic in SQL queries.
+
+```sql
+SELECT name,
+       CASE 
+           WHEN age < 30 THEN 'Young'
+           WHEN age BETWEEN 30 AND 50 THEN 'Middle-aged'
+           ELSE 'Old'
+       END as age_category
+FROM employees;
+```
+
+### COLLATE
+
+The `COLLATE` operator is used to specify a collation sequence for string comparison.
+
+```sql
+SELECT name FROM employees ORDER BY name COLLATE NOCASE;
+```
+
+### ||
+
+The concatenation operator `||` is sometimes considered an advanced comparison operator when used in conjunction with other operators for string manipulation and comparisons.
+
+```sql
+SELECT firstName || ' ' || lastName AS 'Full Name' FROM employees;
+```
+
+### MATCH
+
+Used for full-text search, it's specific to tables that are set up with the FTS (Full Text Search) extension.
+
+```sql
+SELECT * FROM books WHERE title MATCH 'adventure';
+```
+
+### REGEXP
+
+SQLite doesn't have built-in regular expression support, but you can add it via a user-defined function.
+
+```sql
+SELECT * FROM employees WHERE name REGEXP '^Jo.*';
+```
+
+Understanding these advanced operators provides greater flexibility in data manipulation and querying, allowing you to perform complex operations with ease.
+
+# Constraints
+
+SQLite supports several types of constraints that allow you to enforce certain rules on the data within your tables. Constraints can be specified at the column level or at the table level. Here's an overview of the primary constraints available in SQLite:
+
+### PRIMARY KEY
+
+A `PRIMARY KEY` constraint uniquely identifies each record in a table. Each table can only have one primary key, which can consist of one or multiple columns.
+
+```sql
+CREATE TABLE employees (
+    ID INTEGER PRIMARY KEY,
+    name TEXT
+);
+```
+
+### UNIQUE
+
+The `UNIQUE` constraint ensures that all values in a column are distinct.
+
+```sql
+CREATE TABLE employees (
+    ID INTEGER PRIMARY KEY,
+    email TEXT UNIQUE
+);
+```
+
+### NOT NULL
+
+The `NOT NULL` constraint ensures that a column cannot contain `NULL` values.
+
+```sql
+CREATE TABLE employees (
+    ID INTEGER PRIMARY KEY,
+    name TEXT NOT NULL
+);
+```
+
+### CHECK
+
+The `CHECK` constraint ensures that all values in a column satisfy a specific condition.
+
+```sql
+CREATE TABLE employees (
+    ID INTEGER PRIMARY KEY,
+    age INTEGER CHECK(age >= 18)
+);
+```
+
+### DEFAULT
+
+The `DEFAULT` constraint sets a default value for a column when no value is provided during an `INSERT` operation.
+
+```sql
+CREATE TABLE employees (
+    ID INTEGER PRIMARY KEY,
+    age INTEGER DEFAULT 30
+);
+```
+
+### FOREIGN KEY
+
+The `FOREIGN KEY` constraint identifies a set of columns in one table that refers to a set of columns in another table. It is used to enforce referential integrity.
+
+```sql
+CREATE TABLE orders (
+    orderID INTEGER PRIMARY KEY,
+    employeeID INTEGER,
+    FOREIGN KEY (employeeID) REFERENCES employees(ID)
+);
+```
+
+### COLLATE
+
+The `COLLATE` constraint is used to specify a collation sequence for ordering data. It's more of a column constraint that affects how string comparison is done.
+
+```sql
+CREATE TABLE employees (
+    ID INTEGER PRIMARY KEY,
+    name TEXT COLLATE NOCASE
+);
+```
+
+### AUTOINCREMENT
+
+In SQLite, `AUTOINCREMENT` is used along with the `INTEGER PRIMARY KEY` constraint to automatically increment the primary key value when new rows are added. Note that SQLite has some peculiarities regarding how it handles `AUTOINCREMENT`.
+
+```sql
+CREATE TABLE employees (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT
+);
+```
+
+### WITHOUT ROWID
+
+While not a constraint in the traditional sense, `WITHOUT ROWID` changes the underlying data structure of the table to omit the built-in `ROWID` column, affecting how the table handles primary keys. This can lead to performance improvements in certain cases.
+
+```sql
+CREATE TABLE employees (
+    ID INTEGER PRIMARY KEY,
+    name TEXT
+) WITHOUT ROWID;
+```
+
+### Single and Multiple CHECK Constraints
+
+You can have multiple `CHECK` constraints on a single column or across multiple columns. Here's an example:
+
+```sql
+CREATE TABLE persons (
+    ID INTEGER PRIMARY KEY,
+    name TEXT,
+    age INTEGER,
+    status TEXT,
+    CHECK(age >= 0),
+    CHECK(age <= 150),
+    CHECK((status = 'married' AND age >= 18) OR status != 'married')
+);
+```
+
+Understanding these constraints allows you to better design your SQLite database schemas and enforce integrity rules on your data.
+
+# Understanding the SELECT Statement in SQLite: A Comprehensive Guide
+
+SQLite is one of the most widely-used relational database management systems. It is highly efficient, lightweight, and can be integrated into various types of applications, including mobile and web apps. One of the core SQL commands used to query an SQLite database is the `SELECT` statement. This article aims to provide a comprehensive guide to understanding the `SELECT` statement in SQLite.
+
+## Basic Syntax of SELECT
+
+The `SELECT` statement is used to query tables in a database and retrieve specific data. Here's the basic syntax:
+
+```sql
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition; 
+```
+
+For example:
+
+```sql
+SELECT name, age
+FROM employees
+WHERE age > 30;
+```
+
+### Selecting All Columns
+
+To select all columns from a table, you use the asterisk (*) symbol:
+
+```sql
+SELECT *
+FROM employees;
+```
+
+## Filtering with WHERE
+
+The `WHERE` clause filters records based on one or more conditions:
+
+```sql
+SELECT name, age
+FROM employees
+WHERE age >= 30 AND name LIKE 'John%';
+```
+
+## Sorting with ORDER BY
+
+The `ORDER BY` keyword is used to sort the result set in ascending or descending order:
+
+```sql
+SELECT name, age
+FROM employees
+ORDER BY age ASC;
+```
+
+## Limiting Results with LIMIT
+
+The `LIMIT` keyword is used to limit the number of rows returned:
+
+```sql
+SELECT name, age
+FROM employees
+LIMIT 5;
+```
+
+## Aggregate Functions
+
+SQLite supports various aggregate functions like `COUNT()`, `SUM()`, `MAX()`, `MIN()`, and `AVG()`:
+
+```sql
+SELECT COUNT(*)
+FROM employees
+WHERE age > 30;
+```
+
+## Joins
+
+SQLite supports different types of joins including INNER JOIN, LEFT JOIN, and CROSS JOIN.
+
+### INNER JOIN
+
+```sql
+SELECT employees.name, departments.name
+FROM employees
+INNER JOIN departments ON employees.department_id = departments.id;
+```
+
+### LEFT JOIN
+
+```sql
+SELECT employees.name, departments.name
+FROM employees
+LEFT JOIN departments ON employees.department_id = departments.id;
+```
+
+## Subqueries
+
+A subquery or inner query is a query within another SQL query:
+
+```sql
+SELECT name
+FROM employees
+WHERE department_id = (SELECT id FROM departments WHERE name = 'HR');
+```
+
+## DISTINCT Keyword
+
+The `DISTINCT` keyword is used to return unique values:
+
+```sql
+SELECT DISTINCT department_id
+FROM employees;
+```
+
+## Conclusion
+
+The `SELECT` statement is a highly flexible and powerful tool for querying SQLite databases. It provides numerous options for specifying exactly what data you want to retrieve, how you want to filter it, and in what order you want the results. Mastering the `SELECT` statement is essential for anyone who wants to work with SQLite databases effectively.
+
+From filtering with the `WHERE` clause to joining tables and using aggregate functions, there's a lot you can do with `SELECT`. As you get more comfortable with it, you'll find that it allows you to perform complex operations and retrieve very specific data sets, making your applications more dynamic and data-driven.
+
+Whether you're a beginner just starting out with SQLite or a seasoned developer looking to refresh your knowledge, understanding how to use the `SELECT` statement effectively is a crucial skill.
+
+Certainly! I'll include explanations and examples for the `OFFSET` and `HAVING` clauses, extending our comprehensive guide to the `SELECT` statement in SQLite.
+
+---
+
+## OFFSET: Skipping Rows
+
+The `OFFSET` clause is used in conjunction with `LIMIT` to skip a specific number of rows before returning the result set. This is useful for implementing pagination.
+
+```sql
+SELECT name, age
+FROM employees
+LIMIT 5 OFFSET 10;
+```
+
+In this example, the first 10 rows will be skipped, and the next 5 rows will be returned.
+
+## HAVING: Filtering Aggregated Data
+
+While the `WHERE` clause is used for filtering rows, the `HAVING` clause is used for filtering the result set based on a condition applied to an aggregated data. The `HAVING` clause comes after the `GROUP BY` clause.
+
+For example, consider an `employees` table with columns `id`, `name`, `age`, and `department_id`. Let's say you want to find departments with more than 5 employees who are older than 30.
+
+```sql
+SELECT department_id, COUNT(*)
+FROM employees
+WHERE age > 30
+GROUP BY department_id
+HAVING COUNT(*) > 5;
+```
+
+In this query, `GROUP BY` groups the employees by their `department_id`, and `COUNT(*)` counts the number of employees in each group. The `HAVING` clause then filters out the groups that don't meet the condition of having more than 5 employees.
+
+### Combining WHERE, GROUP BY, and HAVING
+
+These clauses can be used together for more complex queries. Here's an example that uses all three:
+
+```sql
+SELECT department_id, AVG(age)
+FROM employees
+WHERE age > 20
+GROUP BY department_id
+HAVING AVG(age) > 30
+ORDER BY AVG(age) DESC
+LIMIT 5;
+```
+
+In this example, we first filter the employees who are older than 20 using the `WHERE` clause. Then, we group them by `department_id` and calculate the average age within each department using `AVG(age)`. The `HAVING` clause then filters out departments where the average age is not greater than 30. Finally, the `ORDER BY` and `LIMIT` clauses sort the remaining departments by average age in descending order and limit the output to 5 rows.
+
+## Conclusion
+
+The `SELECT` statement in SQLite is a versatile and powerful query tool. With the addition of `OFFSET` for pagination and `HAVING` for filtering aggregated data, you gain even more control over the data you retrieve. These advanced options provide you with the flexibility to write more complex, efficient queries, making it easier to build dynamic, data-driven applications. Whether you're a beginner or a seasoned developer, mastering these functionalities of the `SELECT` statement will undoubtedly make your SQLite journey more effective and rewarding.
+
 ## Download Options 
 Finally, if you want to use SQLite you must already have installed on your computer, you can check if you have it and the version by opening your terminal and typing:
 ```szh

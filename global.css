@@ -6,5 +6,20 @@
   .text-edge-outline {
     -webkit-text-stroke: 1px rgba(255,255,255,0.3);
   }
+
+.carrousel{
+  display: grid;
+  grid-auto-flow: column;
+  scroll-behavior: auto;
+  gap: 1.2rem;
+  overflow-y: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: mandatory;
+  scrollbar-width: none;
+  max-width: 80%;
+}
+.carrousel::-webkit-scrollbar{
+  display: none;
+}
 } 
 
