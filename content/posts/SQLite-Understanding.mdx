@@ -633,6 +633,356 @@ In this example, we first filter the employees who are older than 20 using the `
 
 The `SELECT` statement in SQLite is a versatile and powerful query tool. With the addition of `OFFSET` for pagination and `HAVING` for filtering aggregated data, you gain even more control over the data you retrieve. These advanced options provide you with the flexibility to write more complex, efficient queries, making it easier to build dynamic, data-driven applications. Whether you're a beginner or a seasoned developer, mastering these functionalities of the `SELECT` statement will undoubtedly make your SQLite journey more effective and rewarding.
 
+Manipulating and filtering alphanumeric data can be achieved using a variety of methods in different programming languages and databases. In this discussion, I will focus on SQL and SQLite, a popular relational database management system.
+
+### SQL and SQLite Methods for Alphanumeric Data Manipulation
+
+`length(str), lower(str), upper(str), substr(str,start,length), trim(str)`
+`replace(str, pattern, replace), instr(str, substring)` `instr=return index` just replace the output but no the original data if is used as select element
+`can be nested for example, to capitalize: select upper(substr(name,1,1)||lower(name,2,length(name)-1)) where lenght(name) > 0`
+
+#### 1. String Concatenation
+
+SQL allows the concatenation of two or more strings. The `||` operator can be used for this purpose.
+
+```sql
+SELECT 'Hello' || ' ' || dataField;  
+```
+
+This will output `Hello World`.
+
+#### 2. Substring Extraction
+
+The `SUBSTR()` function extracts a substring from a string, given a starting position and length.
+
+```sql
+SELECT SUBSTR('Hello World', 1, 5);
+```
+
+This will output `Hello`.
+
+#### 3. String Replacement
+
+Although SQLite does not natively support string replacement, you can create custom functions in languages like Python and use them within SQLite.
+
+#### 4. String Length
+
+You can use the `LENGTH()` function to get the length of a string.
+
+```sql
+SELECT LENGTH('Hello World');
+```
+
+This will output `11`.
+
+#### 5. Case Conversion
+
+You can convert the case of alphabetic characters in strings using `UPPER()` and `LOWER()`.
+
+```sql
+SELECT UPPER('Hello');
+SELECT LOWER('WORLD');
+```
+
+This will output `HELLO` and `world`, respectively.
+
+### SQL and SQLite Methods for Alphanumeric Data Filtering
+
+#### 1. Exact Match
+
+You can filter records based on an exact match using the `=` operator.
+
+```sql
+SELECT * FROM table WHERE column = 'value';
+```
+
+#### 2. Partial Match using LIKE
+
+The `LIKE` operator can be used for partial string matching.
+
+```sql
+SELECT * FROM table WHERE column LIKE 'A%';
+```
+
+This will return all records where the `column` starts with the letter 'A'.
+
+#### 3. Regular Expression Matching
+
+SQLite doesn't support full regular expressions, but if it's a requirement, you can use auxiliary libraries or manipulate data outside of SQLite for this purpose.
+
+#### 4. IN Clause
+
+The `IN` clause can be used to filter records based on a list of values.
+
+```sql
+SELECT * FROM table WHERE column IN ('value1', 'value2', 'value3');
+```
+
+#### 5. NOT LIKE and NOT IN
+
+These operators serve as the opposite of `LIKE` and `IN`, filtering out records that match the conditions.
+
+```sql
+SELECT * FROM table WHERE column NOT LIKE 'A%';
+SELECT * FROM table WHERE column NOT IN ('value1', 'value2');
+```
+
+#### 6. GLOB Operator
+
+The `GLOB` operator is similar to `LIKE` but uses Unix shell-style wildcards.
+
+```sql
+SELECT * FROM table WHERE column GLOB 'A*';
+```
+
+These methods can be combined and modified according to the specific requirements of your query, providing powerful tools to manipulate and filter alphanumeric data in SQL and SQLite.
+
+# Exploring Math Functions in SQLite: A Comprehensive Guide
+
+SQLite is a versatile, self-contained database engine known for its efficiency and ease of use. While it may not have the extensive set of math functions found in other SQL databases like MySQL or PostgreSQL, SQLite does offer a set of handy built-in functions that can perform a variety of mathematical operations.
+
+## Table of Contents
+
+`abs(x), random(), round(x), power(x,y), ceil(x), floor(x) sqrt()`
+
+1. [Introduction](#Introduction)
+2. [Basic Arithmetic Operations](#Basic-Arithmetic-Operations)
+3. [Rounding Functions](#Rounding-Functions)
+4. [Trigonometric Functions](#Trigonometric-Functions)
+5. [Random Numbers](#Random-Numbers)
+6. [Aggregation Functions](#Aggregation-Functions)
+7. [Creating Custom Math Functions](#Creating-Custom-Math-Functions)
+8. [Conclusion](#Conclusion)
+
+## Introduction
+
+While SQLite is not a full-fledged scientific computing tool, you'll find it provides sufficient math functionalities for most everyday applications. Let's look at what SQLite has to offer.
+
+## Basic Arithmetic Operations
+
+SQLite offers basic arithmetic operations that can be performed directly in SQL queries:
+
+- Addition (`+`)
+- Subtraction (`-`)
+- Multiplication (`*`)
+- Division (`/`)
+- Modulus (`%`)
+
+### Example:
+
+```sql
+SELECT (10 + 2) AS addition, 
+       (10 - 2) AS subtraction,
+       (10 * 2) AS multiplication,
+       (10 / 2) AS division,
+       (10 % 3) AS modulus;
+```
+
+## Rounding Functions
+
+SQLite offers the `ROUND()` function to round numbers to a specified decimal point.
+
+### Example:
+
+```sql
+SELECT ROUND(123.4567, 2) AS rounded_number;
+```
+
+This will output `123.46`.
+
+## Trigonometric Functions
+
+SQLite lacks built-in trigonometric functions. However, you can add custom trigonometric functions using third-party libraries or language bindings, such as Python’s SQLite3 module.
+
+## Random Numbers
+
+SQLite has a built-in function for generating random numbers called `RANDOM()`.
+
+### Example:
+
+```sql
+SELECT RANDOM() AS random_number;
+```
+
+This will generate a random integer between the minimum and maximum values of a signed 64-bit integer.
+
+## Aggregation Functions
+
+Aggregation functions operate on a set of rows and return a single summary value.
+
+- `SUM()`: Sum of values
+- `AVG()`: Average of values
+- `MIN()`: Minimum value
+- `MAX()`: Maximum value
+
+### Example:
+
+```sql
+SELECT SUM(column_name) AS sum_value,
+       AVG(column_name) AS avg_value,
+       MIN(column_name) AS min_value,
+       MAX(column_name) AS max_value
+FROM table_name;
+```
+
+## Creating Custom Math Functions
+
+SQLite’s functionality can be extended through the use of custom functions. You can write your own functions in C, Python, or any other language that has SQLite bindings, and then add these functions to the SQLite environment. This is particularly useful for complex mathematical operations not supported natively by SQLite.
+
+For example, in Python:
+
+```python
+import sqlite3
+
+def square_root(x):
+    return x ** 0.5
+
+con = sqlite3.connect(":memory:")
+con.create_function("sqrt", 1, square_root)
+```
+
+Now you can use `sqrt` in your SQL queries within that Python program.
+
+## Conclusion
+
+SQLite’s suite of mathematical functions is not as extensive as other SQL databases, but it does cover the basics and provides the flexibility to add custom functions. Whether you’re building a complex application or just need to run some quick calculations on your data, SQLite offers enough functionality to meet most needs. With the option to extend its features, SQLite stands as a versatile tool for numerical operations.
+
+# Mastering Dates and Times in SQLite: A Comprehensive Guide
+
+SQLite is a well-known, lightweight database engine that offers an impressive range of built-in features. One such area where SQLite shines is its handling of date and time values. This guide aims to offer a comprehensive overview of how to work with dates and time in SQLite.
+
+## Table of Contents
+
+1. [Introduction](#Introduction)
+2. [Data Types for Dates and Time](#Data-Types-for-Dates-and-Time)
+3. [Date and Time Functions](#Date-and-Time-Functions)
+    - [strftime](#strftime)
+    - [date](#date)
+    - [time](#time)
+    - [datetime](#datetime)
+    - [julianday](#julianday)
+4. [Arithmetic Operations](#Arithmetic-Operations)
+5. [Formatting Dates and Times](#Formatting-Dates-and-Times)
+6. [Common Queries](#Common-Queries)
+7. [Conclusion](#Conclusion)
+
+## Introduction
+
+SQLite doesn't have dedicated date and/or time data types. However, it supports date and time storage in various string and numeric formats. Also, SQLite provides powerful built-in functions to manipulate these values.
+
+## Data Types for Dates and Time
+
+SQLite supports the following formats for storing date and time values:
+
+- TEXT (ISO8601 string): `"YYYY-MM-DD HH:MM:SS.SSS"`
+- REAL (Julian day numbers)
+- INTEGER (Unix Time, the number of seconds since 1970-01-01 00:00:00 UTC)
+
+```sql
+CREATE TABLE events (
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    event_date TEXT
+);
+```
+
+## Date and Time Functions
+
+`we can use data generated from system with CURRENT_DATE, CURRENT_TIME, CURRENT_TIMESTAMP`
+SQLite provides a variety of functions for working with date and time values.
+
+### strftime
+
+The `strftime` function allows you to format date and time.
+%Y year
+%d day
+%m month
+%M Minute
+%H Hour
+
+```sql
+SELECT strftime('%Y-%m-%d', 'now');
+```
+
+### date
+
+The `date` function returns the date in `YYYY-MM-DD` format.
+
+```sql
+SELECT date('now');
+```
+
+### time
+
+The `time` function gives the time of day in `HH:MM:SS` format.
+
+```sql
+SELECT time('now');
+```
+
+### datetime
+
+The `datetime` function returns the date and time in `YYYY-MM-DD HH:MM:SS` format.
+
+```sql
+SELECT datetime('now');
+```
+
+### julianday
+
+The `julianday` function returns the Julian day number, which can be used for date-time calculations.
+
+```sql
+SELECT julianday('now');
+```
+
+## Arithmetic Operations
+
+SQLite allows basic arithmetic operations on date and time values.
+
+```sql
+-- Adding 1 day to the current date
+SELECT date('now', '+1 day');
+
+-- Subtracting 60 seconds from the current time
+SELECT datetime('now', '-60 seconds');
+```
+
+## Formatting Dates and Times
+
+You can use the `strftime` function to format date and time in various ways:
+
+```sql
+-- Get the current year
+SELECT strftime('%Y', 'now');
+
+-- Get the current month
+SELECT strftime('%m', 'now');
+
+-- Get the current day of the month
+SELECT strftime('%d', 'now');
+```
+
+## Common Queries
+
+Here are some common queries involving date and time:
+
+```sql
+-- Get all events happening today
+SELECT * FROM events WHERE date(event_date) = date('now');
+
+-- Get all events in the future
+SELECT * FROM events WHERE date(event_date) > date('now');
+
+-- Get all events for a specific year
+SELECT * FROM events WHERE strftime('%Y', event_date) = '2022';
+```
+
+## Conclusion
+
+SQLite offers a range of functionalities to manipulate dates and times, making it easy to perform common operations such as formatting, comparison, and arithmetic. Though SQLite does not have specialized date and time data types, its powerful built-in functions more than compensate for this, offering flexibility and power in handling date-time values.
+
+
 ## Download Options 
 Finally, if you want to use SQLite you must already have installed on your computer, you can check if you have it and the version by opening your terminal and typing:
 ```szh
